@@ -72,6 +72,7 @@ const HomePage = ({handleLogout}) => {
             const { choices } = resp.data;
             const res = choices[0].message.content;
             setResponse(res)
+            setPrompt("")
         }).catch((error) => {
             alert(error.message)
         })

@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+//import dotenv from 'dotenv';
 import React, { useState } from 'react';
 import LandingPage from './components/LandingPage';
 import HomePage from './components/HomePage';
