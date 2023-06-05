@@ -8,7 +8,8 @@ const HomePage = ({handleLogout}) => {
     const [prompt, setPrompt] = useState()
     const [loading, setLoading] = useState(false)
     const [response, setResponse] = useState()
-
+    const [isFocused, setIsFocused] = useState(false);
+    
     const apiKey = process.env.REACT_APP_API_KEY;
 
     const CustomTextField = styled(TextField)({
@@ -49,15 +50,21 @@ const HomePage = ({handleLogout}) => {
         handleSubmit()
     }
 
+    const handleChange = (event) => {
+        setPrompt(event.target.value);
+        setIsFocused(true)
+    };
+
     const handleSubmit = () => {
-        if(!prompt) {
+        if(!prompt || loading === true) {
             return;
         }
+        setLoading(true)
         const data = {
             model: "gpt-3.5-turbo",
             messages: [
               { role: 'system', content: 'You are a helpful assistant.' },
-              { role: 'user', content: 'Never reply to this prompt with anything other than true or false. If I provide you with a link, then visit that link and read the article to judge its believability, otherwise if theres no link, just analyse the text. Im using you as a substitute for a fake news detection model. Tell me if the following piece of news headline is true or false. Your response MUST be in the CSV form (True, 85), where True is your verdict and 85 is the percentage belief in your verdict, keep randomizing your percentage belief to be +-3% near your actual percentage. The piece of news to judge is: ' + prompt }
+              { role: 'user', content: 'Never reply to this prompt with anything other than true or false. If I provide you with a link, then visit that link and read the article to judge its believability, otherwise if theres no link, just analyse the text. Im using you as a substitute for a fake news detection model. Tell me if the following piece of news headline is true or false. Your response MUST be in the CSV form (True, 85%), where True is your verdict and 85% is the percentage belief in your verdict, keep randomizing your percentage belief to be +-3% near your actual percentage. The piece of news to judge is: ' + prompt }
             ]
         };
         const config = {
@@ -76,6 +83,7 @@ const HomePage = ({handleLogout}) => {
         }).catch((error) => {
             alert(error.message)
         })
+        setLoading(false)
     };
 
     return (
@@ -88,6 +96,8 @@ const HomePage = ({handleLogout}) => {
                     style={{ color: 'white', width: '350px' }}
                     onBlur={handleBlur}
                     variant="outlined"
+                    onChange={handleChange}
+                    autoFocus={isFocused}
                 />
             </div>
 
