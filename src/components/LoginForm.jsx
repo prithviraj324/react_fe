@@ -52,6 +52,7 @@ const LoginForm = ({label, handleSubmit}) => {
             <br></br>
             <div>
               <CustomTextField
+                type="password"
                 label="Password"
                 value={password}
                 color="primary"
