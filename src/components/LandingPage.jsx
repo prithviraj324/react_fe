@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import LoginForm from './LoginForm';
 import CustomButton from './CustomButton';
 
-function LandingPage({ handleLogin, handleSignup, handleFormSubmit }) {
+function LandingPage({ handleLogin, handleSignup }) {
     const [showForm, setShowForm] = useState(false)
+    const [signup, setSignup] = useState(false)
 
     const barStyle = {
         position: 'absolute',
@@ -46,23 +47,36 @@ function LandingPage({ handleLogin, handleSignup, handleFormSubmit }) {
                         <div style={{ flex: 'none' }}>
                             <CustomButton 
                                 label="Login"
-                                handleClick={() => { setShowForm(true) }}
+                                handleClick={() => { 
+                                    setShowForm(true);
+                                    setSignup(false); 
+                                }}
                                 size="large"
                             />
                             <br></br>
                             <CustomButton 
                                 label="Sign Up"
-                                handleClick={() => { setShowForm(true) }}
+                                handleClick={() => { 
+                                    setShowForm(true);
+                                    setSignup(true);
+                                }}
                                 size="large"
                             />
                         </div>
                     </div>
                 ) : (
                     <div style={rightDivStyle}>
-                        <LoginForm
-                            label="Log In"
-                            handleSubmit={handleFormSubmit}
+                        {signup ? (
+                            <LoginForm
+                                label="Sign Up"
+                                handleSubmit={handleSignup}
+                            />
+                        ) : (
+                            <LoginForm
+                                label="Log In"
+                                handleSubmit={handleLogin}
                         />
+                        )}
                     </div>
                 )}
             </div>

@@ -20,7 +20,16 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [user, setUser] = useState('');
+  const [users, setUsers] = useState([]);
+
+  const initialUsers = [
+    { email: 'pritvirajc.cs19@bmsce.ac.in', password: 'password1' },
+    { email: 'admin@gmail.com', password: 'admin' }
+  ];
+
+  useState(() => {
+    setUsers(initialUsers)
+  })
 
   const mainDivStyle = {
       display: 'flex',
@@ -31,17 +40,22 @@ function App() {
   }
 
   const handleLogin = (email, password) => {
-    handleFormSubmit(email, password)
+    const user = users.find((user) => user.email === email && user.password === password);
+    if(user) {
+      alert("LOGIN SUCCESS");
+      setLoggedIn(true);
+    } else {
+      alert("INVALID CREDENTIALS");
+    }
   };
 
   const handleSignup = (email, password) => {
-    handleFormSubmit(email, password)
-  };
-
-  const handleFormSubmit = (email, password) => {
-    // Save the login/signup details and handle authentication logic
-      setUser(email)
-      setLoggedIn(true);
+    console.log("addding new user");
+    const newUser = { email: email, password: password };
+    setUsers(users => [...users, newUser])
+    console.log("ADDED");
+    console.log(...users);
+    setLoggedIn(true);
   };
 
   const handleLogout = () => {
@@ -53,7 +67,7 @@ function App() {
     <div style={mainDivStyle}>
       <GlobalStyle />
       {!loggedIn && (
-        <LandingPage handleLogin={handleLogin} handleSignup={handleSignup} handleFormSubmit={handleFormSubmit}/>
+        <LandingPage handleLogin={handleLogin} handleSignup={handleSignup} />
       )}
 
       {loggedIn && <HomePage handleLogout={handleLogout} />}
